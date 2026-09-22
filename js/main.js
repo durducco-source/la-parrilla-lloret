@@ -137,6 +137,92 @@
     els.forEach(function (e) { io.observe(e); });
   }
 
+  /* ---------- Fuego animado (llamas y chispas en canvas) ---------- */
+  function initFire() {
+    // Paleta de la llama: núcleo blanco-amarillo → naranja → rojo → brasa oscura.
+    var STOPS = [[255, 226, 160], [255, 196, 90], [255, 150, 40], [235, 80, 20], [150, 30, 12], [60, 20, 10]];
+    function mix(a, b, f) { return Math.round(a + (b - a) * f); }
+    function colorAt(t) {
+      var x = t * (STOPS.length - 1), i = Math.min(STOPS.length - 2, Math.floor(x)), f = x - i;
+      return [mix(STOPS[i][0], STOPS[i + 1][0], f), mix(STOPS[i][1], STOPS[i + 1][1], f), mix(STOPS[i][2], STOPS[i + 1][2], f)];
+    }
+    // Sprites pre-renderizados (uno por fase de la llama) para que la animación sea ligera.
+    var SPRITES = [];
+    for (var s = 0; s < 24; s++) {
+      var sc = document.createElement("canvas"); sc.width = sc.height = 64;
+      var sx = sc.getContext("2d"), col = colorAt(s / 23);
+      var gr = sx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      gr.addColorStop(0, "rgba(" + col + ",1)");
+      gr.addColorStop(0.35, "rgba(" + col + ",.55)");
+      gr.addColorStop(1, "rgba(" + col + ",0)");
+      sx.fillStyle = gr; sx.fillRect(0, 0, 64, 64);
+      SPRITES.push(sc);
+    }
+
+    $$("canvas[data-fire]").forEach(function (cv) {
+      var ctx = cv.getContext("2d"); if (!ctx) return;
+      var k = parseFloat(cv.getAttribute("data-fire")) || 1;
+      var RES = 0.5; // se dibuja a media resolución: bordes más suaves y menos trabajo
+      var W = 1, H = 1, ps = [], raf = 0, visible = true, tick = 0;
+      var small = window.matchMedia("(max-width: 760px)").matches;
+      var MAX = small ? 380 : 900, scale = small ? 0.7 : 1;
+      function size() {
+        var b = cv.getBoundingClientRect();
+        W = Math.max(1, Math.floor(b.width)); H = Math.max(1, Math.floor(b.height));
+        cv.width = Math.ceil(W * RES); cv.height = Math.ceil(H * RES); ctx.setTransform(RES, 0, 0, RES, 0, 0);
+      }
+      function spawn() {
+        var x = Math.random() * W, c = Math.max(0, 1 - Math.abs(x / W - 0.5) * 1.1);
+        // el fuego respira: la altura de las llamas oscila a lo largo del ancho
+        var breath = 0.75 + 0.25 * Math.sin(tick * 0.02 + x * 0.004) + 0.15 * Math.sin(tick * 0.051 + x * 0.013);
+        if (Math.random() < 0.035) {
+          ps.push({ s: 1, x: x, y: H - 10 - Math.random() * 40, vx: (Math.random() - 0.5) * 1.2, vy: -(1.5 + Math.random() * 2.5), l: 0, m: 80 + Math.random() * 140, r: 0.8 + Math.random() * 1.4 });
+        } else {
+          ps.push({ s: 0, x: x, y: H + 6, vx: (Math.random() - 0.5) * 0.5, vy: -(1.6 + Math.random() * 2.2) * (0.5 + c * 0.8) * breath, l: 0, m: (40 + Math.random() * 50) * (0.6 + c * 0.6), r: (12 + Math.random() * 22) * (0.55 + c * 0.7) * scale, w: Math.random() * 6.28 });
+        }
+      }
+      function frame() {
+        tick++;
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalCompositeOperation = "lighter";
+        var n = Math.ceil((W / 45) * k), i, p, t, a, rad, sp;
+        if (ps.length < MAX) for (i = 0; i < n; i++) spawn();
+        for (i = ps.length - 1; i >= 0; i--) {
+          p = ps[i]; p.l++;
+          t = p.l / p.m;
+          if (t >= 1 || p.y < -30) { ps.splice(i, 1); continue; }
+          if (p.s) {
+            p.x += p.vx + Math.sin(p.l * 0.09 + p.x) * 0.7; p.y += p.vy; p.vy *= 0.995;
+            ctx.globalAlpha = (1 - t) * 0.9;
+            ctx.fillStyle = "rgb(255," + (210 - Math.round(t * 110)) + ",90)";
+            ctx.fillRect(p.x, p.y, p.r * 2, p.r * 2);
+            continue;
+          }
+          // turbulencia: las lenguas de fuego ondulan al subir
+          p.x += p.vx + Math.sin(p.w + p.l * 0.12) * 0.6 * t; p.y += p.vy; p.vy *= 0.992;
+          a = Math.min(1, t * 7) * Math.pow(1 - t, 1.3) * 0.62;
+          rad = p.r * (1 - t * 0.55);
+          sp = SPRITES[Math.min(23, Math.floor(t * 24))];
+          ctx.globalAlpha = a;
+          ctx.drawImage(sp, p.x - rad, p.y - rad * 1.7, rad * 2, rad * 3.2); // estirada en vertical = lengua de fuego
+        }
+        ctx.globalAlpha = 1;
+        raf = visible && !document.hidden ? requestAnimationFrame(frame) : 0;
+      }
+      size();
+      if (window.ResizeObserver) new ResizeObserver(size).observe(cv); else window.addEventListener("resize", size);
+      if (reduce) { for (var j = 0; j < 90; j++) frame(); cancelAnimationFrame(raf); raf = 0; return; }
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (es) {
+          visible = es[0].isIntersecting;
+          if (visible && !raf) raf = requestAnimationFrame(frame);
+        }).observe(cv);
+      }
+      document.addEventListener("visibilitychange", function () { if (!document.hidden && visible && !raf) raf = requestAnimationFrame(frame); });
+      raf = requestAnimationFrame(frame);
+    });
+  }
+
   /* ---------- SEO: datos estructurados del restaurante ---------- */
   function injectSchema() {
     var base = get("restaurante.url") || "";
@@ -183,6 +269,7 @@
   safe(applyConfig);
   safe(initHeader);
   safe(initReveal);
+  safe(initFire);
   safe(injectSchema);
   safe(injectAnalytics);
 })();
