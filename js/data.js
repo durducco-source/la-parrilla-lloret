@@ -90,15 +90,15 @@ window.PARRILLA_DATA = {
   cartaNota: "Precios en euros. Consulta alérgenos e intolerancias con nuestro equipo de sala.",
 
   galeria: [
-    { img: "assets/fotos/paella-marisco.jpg", alt: "Paella de marisco con gambas y mejillones", forma: "alta" },
-    { img: "assets/fotos/gambas-ajillo.jpg", alt: "Gambas al ajillo en cazuela de barro", forma: "cuadrada" },
-    { img: "assets/fotos/chuleton.jpg", alt: "Chuletón a la brasa sobre la parrilla", forma: "alta" },
-    { img: "assets/fotos/jamon.jpg", alt: "Pan con tomate y jamón", forma: "alta" },
-    { img: "assets/fotos/calamares.jpg", alt: "Calamares a la andaluza con limón", forma: "cuadrada" },
-    { img: "assets/fotos/paella-fuego.jpg", alt: "Paella cocinándose sobre el fuego", forma: "alta" },
-    { img: "assets/fotos/entrecot-brasa.jpg", alt: "Entrecot sobre las brasas", forma: "alta" },
-    { img: "assets/fotos/carnes-parrilla.jpg", alt: "Carnes a la parrilla", forma: "cuadrada" },
-    { img: "assets/fotos/paella-mixta.jpg", alt: "Paella mixta de La Parrilla", forma: "alta" },
-    { img: "assets/fotos/fachada.jpg", alt: "Entrada del restaurante La Parrilla en Lloret de Mar", forma: "cuadrada" }
+    { img: "assets/galeria/paella.jpg", alt: "Paella con mejillones y guisantes", forma: "alta" },
+    { img: "assets/galeria/gambas-ajillo.jpg", alt: "Gambas al ajillo en cazuela", forma: "cuadrada" },
+    { img: "assets/galeria/entrecot.jpg", alt: "Entrecot a la brasa con espárragos", forma: "alta" },
+    { img: "assets/galeria/jamon.jpg", alt: "Jamón ibérico cortado a mano", forma: "alta" },
+    { img: "assets/galeria/calamares.jpg", alt: "Calamares a la andaluza", forma: "cuadrada" },
+    { img: "assets/galeria/mejillones.jpg", alt: "Mejillones a la marinera", forma: "alta" },
+    { img: "assets/galeria/croquetas.jpg", alt: "Croquetas caseras", forma: "alta" },
+    { img: "assets/galeria/burrata.jpg", alt: "Ensalada de burrata", forma: "cuadrada" },
+    { img: "assets/galeria/tapas.jpg", alt: "Mesa con paella, embutidos y tapas para compartir", forma: "alta" },
+    { img: "assets/galeria/carne-brasa.jpg", alt: "Carne a la brasa en su punto", forma: "cuadrada" }
   ]
 };

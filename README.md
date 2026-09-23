@@ -16,7 +16,8 @@ Sitio estático (HTML, CSS y JavaScript sin dependencias), publicado con GitHub 
 
 ## Fotos
 
-- `assets/fotos/`: fotos del restaurante y sus platos.
-- `assets/img/`: fotografías de ambiente (Unsplash, licencia libre) para la portada y algunas secciones.
+- `assets/galeria/`: fotos de platos de la carta para la galería.
+- `assets/img/`: fotos de portada y secciones.
+- Todas las fotos son de Unsplash (licencia libre). Para sustituirlas por fotos propias, basta con guardar el archivo con el mismo nombre.
 
 La versión anterior (un único `index.html` con editor integrado) sigue disponible en el historial de Git.

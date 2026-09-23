@@ -64,9 +64,10 @@
 
   <!-- ================================ HERO ================================ -->
   <section class="hero" id="inicio" aria-labelledby="hero-title">
-    <div class="hero-media">
-      <img src="assets/fotos/paella-mixta.jpg" alt="Paella mixta de La Parrilla servida en la terraza" width="1400" height="1050" fetchpriority="high">
-    </div>
+    <picture class="hero-media">
+      <source media="(max-width: 760px)" srcset="assets/img/hero-movil.jpg">
+      <img src="assets/img/hero.jpg" alt="Paella de marisco con limón servida en la mesa" width="2200" height="1400" fetchpriority="high">
+    </picture>
     <canvas class="fire fire--hero" data-fire="1" aria-hidden="true"></canvas>
     <div class="container hero-inner">
       <div class="hero-copy">
@@ -97,7 +98,7 @@
   <section class="section casa" id="casa" aria-labelledby="casa-title">
     <div class="container split">
       <div class="split-media reveal reveal--left">
-        <div class="frame frame--tall"><img src="assets/fotos/fachada.jpg" alt="Entrada del restaurante La Parrilla, en Carrer Santa Llúcia, Lloret de Mar" width="335" height="597" loading="lazy" decoding="async"></div>
+        <div class="frame frame--tall"><img src="assets/img/casa.jpg" alt="Mesa preparada con copas y luz natural en el comedor" width="1000" height="1400" loading="lazy" decoding="async"></div>
         <div class="seal"><img src="assets/logo.png" alt="Logotipo de La Parrilla" width="120" height="120" loading="lazy"></div>
       </div>
       <div class="split-copy">
@@ -118,7 +119,7 @@
   <section class="section paellas" id="paellas" aria-labelledby="paellas-title">
     <div class="container split split--rev">
       <div class="split-media reveal">
-        <div class="frame"><img src="assets/fotos/paella-fuego.jpg" alt="Paella cocinándose sobre el fuego en La Parrilla" width="532" height="575" loading="lazy" decoding="async"></div>
+        <div class="frame"><img src="assets/img/paella.jpg" alt="Paella de marisco recién hecha para compartir" width="1400" height="1100" loading="lazy" decoding="async"></div>
         <div class="price-tag"><small>Paella mixta</small><b>19 €</b><span>por persona</span></div>
       </div>
       <div class="split-copy">
@@ -139,7 +140,7 @@
     <canvas class="fire fire--low" data-fire=".8" aria-hidden="true"></canvas>
     <div class="container split">
       <div class="split-media reveal reveal--left">
-        <div class="frame frame--dark"><img src="assets/img/brasa.jpg" alt="Carnes a la brasa con humo sobre la parrilla" width="1600" height="1300" loading="lazy" decoding="async"></div>
+        <div class="frame frame--dark"><img src="assets/img/brasa.jpg" alt="Chuletón a la brasa con romero y patatas" width="1600" height="1300" loading="lazy" decoding="async"></div>
       </div>
       <div class="split-copy">
         <p class="eyebrow reveal">El fuego</p>
